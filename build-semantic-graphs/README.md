@@ -21,13 +21,13 @@ To run the codes, execute the commands below:
 
 * Get the results of dependency parsing and coreference resolution
 
+    - To initialize the predictors, you need to download the models of dependency parsing and coreference resoluation [here](https://drive.google.com/drive/folders/1Q2K5pOkASsr_R7JeeEIebCHaHfYQ9XS_?usp=sharing). Or you could just use the latest models released from [AllenNLP](https://demo.allennlp.org/).
+
     ```bash
     python preprocess/get_coref_and_dep_data.py data.train.json data.valid.json dp.json crf_rsltn.json
     ```
 
-    Since it will take long time to get these files finished, we provide the final data --- [dp.json](https://drive.google.com/file/d/1KnZXqchvHqMZnTh_7tuE57cd934aMBIF/view?usp=sharing) and [crf_rsltn.json](https://drive.google.com/file/d/1I8xTvhkEXpiq4D25Dr7XRUIoe779Ytve/view?usp=sharing).
-
-    PS: We also provide the models of dependency parsing and coreference resoluation which you could find and download [here](https://drive.google.com/drive/folders/1Q2K5pOkASsr_R7JeeEIebCHaHfYQ9XS_?usp=sharing).
+    - Since it will take long time to get these files finished, we provide the final data --- [dp.json](https://drive.google.com/file/d/1KnZXqchvHqMZnTh_7tuE57cd934aMBIF/view?usp=sharing) and [crf_rsltn.json](https://drive.google.com/file/d/1I8xTvhkEXpiq4D25Dr7XRUIoe779Ytve/view?usp=sharing).
 
 * Merge data file (train or valid) with the result files from **Coreference Resolution** and **Dependency Parsing**
 
@@ -35,8 +35,12 @@ To run the codes, execute the commands below:
     python merge.py data.json dp.json crf_rsltn.json merged_data.json
     ```
 
-* Build Semantic Graphs with _Question Tags_ (i.e., whether a node contains span(s) in the question) as the groundtruth of **Context Selection**
+* Build Semantic Graphs with _Question Tags_ (i.e., whether a node contains span(s) in the question) as the groundtruth of **Context Selection** and also _Answer Tags_ (i.e., whether a node contains span(s) in the answer)
+
+    - Here you also need to provide the corresponding tokenized `questions.txt` and `answers.txt` files (cf., [`text-data`](https://drive.google.com/open?id=11FxMXONXF4HJLzpWTaNfaAF_S5gFwklq))
+
+    - This script will also generate the corresponding tokenized `source.txt`, so you need to provide the directory to dump the data as well.
 
     ```bash
-    python build_semantic_graph.py merged_data.json graph_with_tags.json
+    python build_semantic_graph.py merged_data.json questions.txt answers.txt source.txt graph_with_tags.json
     ```
